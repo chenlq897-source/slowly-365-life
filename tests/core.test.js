@@ -1,0 +1,7 @@
+const test=require('node:test');const assert=require('node:assert/strict');const C=require('../core.js');
+test('daily points are idempotent and reverse when history changes',()=>{const s=C.newState({startDate:'2026-01-01'});for(let i=0;i<5;i++)C.setCheckin(s,'2026-01-02',i,true);assert.equal(C.points(s),8);C.setCheckin(s,'2026-01-02',4,true);assert.equal(C.points(s),8);C.setCheckin(s,'2026-01-02',0,false);assert.equal(C.points(s),5);C.setCheckin(s,'2026-01-02',1,false);C.setCheckin(s,'2026-01-02',2,false);assert.equal(C.points(s),0);});
+test('weekly reward can only exist once',()=>{const s=C.newState();C.setWeekly(s,'week_1',true);C.setWeekly(s,'week_1',true);assert.equal(C.points(s),20);C.setWeekly(s,'week_1',false);assert.equal(C.points(s),0);});
+test('transaction deletion restores calculated totals',()=>{const s=C.newState();C.upsert(s.transactions,{id:'t1',type:'nonessential',amount:99,date:'2026-01-01'});assert.equal(C.totals(s).nonessential,99);C.remove(s,'transactions','t1');assert.equal(C.totals(s).nonessential,0);});
+test('merge keeps newer record and honors tombstones',()=>{const a=C.newState(),b=C.newState();C.upsert(a.transactions,{id:'x',type:'income',amount:1,date:'2026-01-01'});C.upsert(b.transactions,{id:'x',type:'income',amount:2,date:'2026-01-01'});a.transactions[0].updatedAt='2026-01-01T00:00:00Z';b.transactions[0].updatedAt='2027-01-01T00:00:00Z';const m=C.merge(a,b);assert.equal(m.transactions[0].amount,2);});
+test('invalid backups are rejected',()=>assert.throws(()=>C.validateBackup({app:'other'})));
+

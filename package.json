@@ -1,0 +1,12 @@
+{
+  "name": "slowly-365-pwa",
+  "version": "2.0.0",
+  "private": true,
+  "description": "慢慢来 · 365天生活重建 PWA",
+  "scripts": {
+    "build": "powershell -ExecutionPolicy Bypass -File tools/build-site.ps1",
+    "test": "node --test tests/core.test.js",
+    "check": "node --check app.js && node --check core.js"
+  }
+}
+
