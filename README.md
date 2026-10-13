@@ -1,5 +1,7 @@
 # 慢慢来 · 365天生活重建 PWA
 
+> V2.0 已加入多层目标、每日行动和生活手账。详见 [V2_IMPLEMENTATION.md](./V2_IMPLEMENTATION.md)。
+
 “少买一点，多活一点。”这是一个手机优先、可安装、离线可用的生活重建应用。当前源码使用原生 HTML/CSS/JavaScript，因此无需安装依赖即可运行；正式账号与跨设备同步由 Supabase 提供。
 
 ## 本地启动
